@@ -44,7 +44,7 @@ export interface Achievement {
 export const admins: Admin[] = [
   {
     id: '1',
-    username: 'admin',
+    username: 'administrator',
     password: 'admin123', // In real implementation, this would be a hashed password
     createdAt: new Date('2023-01-01'),
     updatedAt: new Date('2023-01-01')
