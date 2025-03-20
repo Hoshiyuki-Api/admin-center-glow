@@ -27,16 +27,16 @@ const Profile = () => {
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold">Profil Saya</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">Profil Saya</h2>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="md:col-span-1">
             <CardHeader>
               <CardTitle>Info Profil</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center text-center">
-              <Avatar className="h-32 w-32 mb-4">
+              <Avatar className="h-24 w-24 sm:h-32 sm:w-32 mb-4">
                 {admin.imageUrl ? (
                   <AvatarImage src={admin.imageUrl} alt={admin.username} />
                 ) : (

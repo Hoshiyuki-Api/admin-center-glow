@@ -4,14 +4,26 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetTrigger, 
+  SheetClose 
+} from "@/components/ui/sheet";
+import { 
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { admin } = useAuth();
-
-  const toggleMenu = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,11 +37,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    // Close mobile menu when route changes
-    setIsOpen(false);
-  }, [location.pathname]);
 
   const navLinks = [
     { title: 'Beranda', path: '/' },
@@ -61,38 +68,45 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            {navLinks.map((link, index) => 
-              link.dropdown ? (
-                <div key={index} className="relative group">
-                  <button className="flex items-center text-base font-medium text-gray-700 hover:text-primary transition-colors">
-                    {link.title}
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </button>
-                  <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right">
-                    {link.dropdown.map((item, idx) => (
-                      <Link
-                        key={idx}
-                        to={item.path}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          <div className="hidden md:flex items-center space-x-6">
+            <NavigationMenu>
+              <NavigationMenuList>
+                {navLinks.map((link, index) => 
+                  link.dropdown ? (
+                    <NavigationMenuItem key={index}>
+                      <NavigationMenuTrigger>{link.title}</NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid w-[200px] gap-1 p-2">
+                          {link.dropdown.map((dropdownItem, idx) => (
+                            <li key={idx}>
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  to={dropdownItem.path}
+                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                >
+                                  <div className="text-sm font-medium">{dropdownItem.title}</div>
+                                </Link>
+                              </NavigationMenuLink>
+                            </li>
+                          ))}
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  ) : (
+                    <NavigationMenuItem key={index}>
+                      <Link 
+                        to={link.path} 
+                        className={`${navigationMenuTriggerStyle()} ${
+                          location.pathname === link.path ? 'bg-accent text-accent-foreground' : ''
+                        }`}
                       >
-                        {item.title}
+                        {link.title}
                       </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  key={index}
-                  to={link.path}
-                  className={`text-base font-medium hover:text-primary transition-colors ${
-                    location.pathname === link.path ? 'text-primary' : 'text-gray-700'
-                  }`}
-                >
-                  {link.title}
-                </Link>
-              )
-            )}
+                    </NavigationMenuItem>
+                  )
+                )}
+              </NavigationMenuList>
+            </NavigationMenu>
             {admin ? (
               <Link to="/admin/dashboard">
                 <Button>
@@ -106,64 +120,69 @@ const Navbar = () => {
                 </Button>
               </Link>
             )}
-          </nav>
+          </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button onClick={toggleMenu} className="p-2">
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          {/* Mobile Menu */}
+          <div className="md:hidden flex items-center">
+            {admin && (
+              <Link to="/admin/dashboard" className="mr-2">
+                <Button size="sm">
+                  Dashboard
+                </Button>
+              </Link>
+            )}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label="Menu">
+                  <Menu size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[85%] sm:w-[385px] pt-12">
+                <nav className="flex flex-col space-y-6">
+                  {navLinks.map((link, index) => 
+                    link.dropdown ? (
+                      <div key={index} className="space-y-3">
+                        <div className="font-medium text-lg">{link.title}</div>
+                        <div className="pl-4 space-y-3 border-l-2 border-primary/20">
+                          {link.dropdown.map((item, idx) => (
+                            <SheetClose asChild key={idx}>
+                              <Link
+                                to={item.path}
+                                className="block text-base text-gray-600 hover:text-primary transition-colors"
+                              >
+                                {item.title}
+                              </Link>
+                            </SheetClose>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <SheetClose asChild key={index}>
+                        <Link
+                          to={link.path}
+                          className={`text-lg font-medium transition-colors hover:text-primary ${
+                            location.pathname === link.path ? 'text-primary' : 'text-gray-700'
+                          }`}
+                        >
+                          {link.title}
+                        </Link>
+                      </SheetClose>
+                    )
+                  )}
+                  {!admin && (
+                    <SheetClose asChild>
+                      <Link to="/login-admin" className="w-full">
+                        <Button className="w-full mt-4">
+                          Login Admin
+                        </Button>
+                      </Link>
+                    </SheetClose>
+                  )}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 animate-fade-in">
-            <nav className="flex flex-col space-y-4">
-              {navLinks.map((link, index) => 
-                link.dropdown ? (
-                  <div key={index} className="space-y-2">
-                    <div className="font-medium text-gray-700">{link.title}</div>
-                    <div className="pl-4 space-y-2 border-l-2 border-gray-200">
-                      {link.dropdown.map((item, idx) => (
-                        <Link
-                          key={idx}
-                          to={item.path}
-                          className="block text-sm text-gray-600 hover:text-primary"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    key={index}
-                    to={link.path}
-                    className={`font-medium ${
-                      location.pathname === link.path ? 'text-primary' : 'text-gray-700'
-                    }`}
-                  >
-                    {link.title}
-                  </Link>
-                )
-              )}
-              {admin ? (
-                <Link to="/admin/dashboard">
-                  <Button className="w-full">
-                    Dashboard Admin
-                  </Button>
-                </Link>
-              ) : (
-                <Link to="/login-admin">
-                  <Button variant="outline" className="w-full">
-                    Login Admin
-                  </Button>
-                </Link>
-              )}
-            </nav>
-          </div>
-        )}
       </div>
     </header>
   );

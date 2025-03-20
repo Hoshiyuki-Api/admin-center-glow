@@ -24,8 +24,8 @@ const Dashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="mb-6 flex items-center">
-        <Avatar className="h-12 w-12 mr-4">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center">
+        <Avatar className="h-12 w-12 mb-3 sm:mb-0 sm:mr-4">
           {admin.imageUrl ? (
             <AvatarImage src={admin.imageUrl} alt={admin.username} />
           ) : (
