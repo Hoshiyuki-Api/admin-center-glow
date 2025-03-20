@@ -84,12 +84,12 @@ const Index = () => {
                 Kami membantu siswa mencapai potensi terbaik mereka dan menjadi pemimpin masa depan.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button asChild size="lg" variant="secondary" className="text-primary">
+                <Button asChild size="lg" variant="secondary" className="text-primary font-medium">
                   <Link to="/hubungi-kami">
                     Hubungi Kami
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+                <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/20 hover:text-white">
                   <Link to="/tentang-kami">
                     Pelajari Lebih Lanjut
                   </Link>
