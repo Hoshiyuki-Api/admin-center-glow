@@ -20,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -55,9 +56,17 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         <div className="flex items-center gap-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="flex items-center">
-                <span className="sr-only md:not-sr-only mr-2">{admin?.username}</span>
-                <User className="h-5 w-5" />
+              <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                <span className="sr-only md:not-sr-only">{admin?.username}</span>
+                <Avatar className="h-8 w-8">
+                  {admin?.imageUrl ? (
+                    <AvatarImage src={admin.imageUrl} alt={admin.username} />
+                  ) : (
+                    <AvatarFallback>
+                      {admin?.username.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -119,27 +128,20 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           
           {/* Sidebar Footer */}
           <div className="p-4 border-t">
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex items-center gap-3 mb-3">
+              <Avatar className="h-10 w-10">
+                {admin?.imageUrl ? (
+                  <AvatarImage src={admin.imageUrl} alt={admin.username} />
+                ) : (
+                  <AvatarFallback>
+                    {admin?.username.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                )}
+              </Avatar>
               <div>
                 <p className="font-medium">{admin?.username}</p>
                 <p className="text-xs text-gray-500">Administrator</p>
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
-                    <Link to="/admin/profile">Profil Saya</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
             <Button 
               variant="outline" 

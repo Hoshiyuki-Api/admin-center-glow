@@ -1,13 +1,14 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Admin, addAdmin, updateAdmin, admins } from '@/lib/data';
 import { toast } from '@/components/ui/use-toast';
-import { Loader2, Save } from 'lucide-react';
+import { Loader2, Save, Image, Upload, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 interface AdminFormProps {
   adminData?: Admin;
@@ -20,7 +21,9 @@ const AdminForm = ({ adminData, isEdit = false, isProfile = false }: AdminFormPr
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [existingUsername, setExistingUsername] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { admin: currentAdmin, updateProfile } = useAuth();
 
@@ -28,11 +31,33 @@ const AdminForm = ({ adminData, isEdit = false, isProfile = false }: AdminFormPr
     if (isEdit && adminData) {
       setUsername(adminData.username);
       setExistingUsername(adminData.username);
+      setImageUrl(adminData.imageUrl);
     } else if (isProfile && currentAdmin) {
       setUsername(currentAdmin.username);
       setExistingUsername(currentAdmin.username);
+      setImageUrl(currentAdmin.imageUrl);
     }
   }, [isEdit, adminData, isProfile, currentAdmin]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // In a real app, you would upload to a server or cloud storage
+      // For this demo, we'll use a FileReader to create a data URL
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageUrl(undefined);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,9 +118,10 @@ const AdminForm = ({ adminData, isEdit = false, isProfile = false }: AdminFormPr
       
       if (isProfile) {
         // Update current user profile
-        const data: { username?: string; password?: string } = {};
+        const data: { username?: string; password?: string; imageUrl?: string } = {};
         if (username !== currentAdmin?.username) data.username = username;
         if (password) data.password = password;
+        if (imageUrl !== currentAdmin?.imageUrl) data.imageUrl = imageUrl;
         
         const success = await updateProfile(data);
         if (success) {
@@ -106,9 +132,10 @@ const AdminForm = ({ adminData, isEdit = false, isProfile = false }: AdminFormPr
         }
       } else if (isEdit && adminData) {
         // Update existing admin
-        const data: { username?: string; password?: string } = {};
+        const data: { username?: string; password?: string; imageUrl?: string } = {};
         if (username !== adminData.username) data.username = username;
         if (password) data.password = password;
+        if (imageUrl !== adminData.imageUrl) data.imageUrl = imageUrl;
         
         const updated = updateAdmin(adminData.id, data);
         if (updated) {
@@ -119,7 +146,7 @@ const AdminForm = ({ adminData, isEdit = false, isProfile = false }: AdminFormPr
         }
       } else {
         // Add new admin
-        addAdmin({ username, password });
+        addAdmin({ username, password, imageUrl });
         toast({
           title: 'Admin ditambahkan',
           description: 'Admin baru telah berhasil ditambahkan',
@@ -141,6 +168,57 @@ const AdminForm = ({ adminData, isEdit = false, isProfile = false }: AdminFormPr
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-4">
+        <Label>Foto Profil</Label>
+        <div className="flex items-center space-x-6">
+          <div className="relative">
+            <Avatar className="h-24 w-24">
+              {imageUrl ? (
+                <AvatarImage src={imageUrl} alt={username} />
+              ) : (
+                <AvatarFallback className="text-lg">
+                  {username.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              )}
+            </Avatar>
+            {imageUrl && (
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                onClick={handleRemoveImage}
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+          
+          <div className="space-y-2">
+            <Input
+              type="file"
+              id="profileImage"
+              accept="image/*"
+              onChange={handleImageChange}
+              ref={fileInputRef}
+              className="hidden"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full"
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Foto
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              JPG, PNG atau GIF. Maksimal 1MB.
+            </p>
+          </div>
+        </div>
+      </div>
+      
       <div className="space-y-2">
         <Label htmlFor="username">Username</Label>
         <Input

@@ -1,4 +1,3 @@
-
 import { v4 as uuidv4 } from 'uuid';
 
 // Types
@@ -6,6 +5,7 @@ export interface Admin {
   id: string;
   username: string;
   password: string; // In real app, passwords should be hashed and never stored in frontend
+  imageUrl?: string; // Profile photo URL
   createdAt: Date;
   updatedAt: Date;
 }
@@ -46,6 +46,7 @@ export const admins: Admin[] = [
     id: '1',
     username: 'administrator',
     password: 'admin123', // In real implementation, this would be a hashed password
+    imageUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1280&auto=format&fit=crop',
     createdAt: new Date('2023-01-01'),
     updatedAt: new Date('2023-01-01')
   }
@@ -236,7 +237,7 @@ export const authenticateAdmin = (username: string, password: string): Admin | n
   return admin || null;
 };
 
-export const addAdmin = (adminData: { username: string; password: string }): Admin => {
+export const addAdmin = (adminData: { username: string; password: string; imageUrl?: string }): Admin => {
   const newAdmin: Admin = {
     id: uuidv4(),
     createdAt: new Date(),

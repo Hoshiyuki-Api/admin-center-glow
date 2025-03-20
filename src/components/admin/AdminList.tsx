@@ -8,6 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Edit, Trash2, UserPlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 const AdminList = () => {
   const { admin: currentAdmin } = useAuth();
@@ -61,7 +62,7 @@ const AdminList = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-medium">Username</th>
+                  <th className="text-left py-3 px-4 font-medium">Admin</th>
                   <th className="text-left py-3 px-4 font-medium">Tanggal Dibuat</th>
                   <th className="text-left py-3 px-4 font-medium">Terakhir Diperbarui</th>
                   <th className="text-right py-3 px-4 font-medium">Aksi</th>
@@ -71,13 +72,26 @@ const AdminList = () => {
                 {adminList.map((admin) => (
                   <tr key={admin.id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">
-                      <div className="font-medium">
-                        {admin.username}
-                        {admin.id === currentAdmin?.id && (
-                          <span className="ml-2 px-2 py-1 text-xs bg-primary/10 text-primary rounded-md">
-                            Anda
-                          </span>
-                        )}
+                      <div className="flex items-center space-x-3">
+                        <Avatar>
+                          {admin.imageUrl ? (
+                            <AvatarImage src={admin.imageUrl} alt={admin.username} />
+                          ) : (
+                            <AvatarFallback>
+                              {admin.username.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          )}
+                        </Avatar>
+                        <div>
+                          <div className="font-medium">
+                            {admin.username}
+                            {admin.id === currentAdmin?.id && (
+                              <span className="ml-2 px-2 py-1 text-xs bg-primary/10 text-primary rounded-md">
+                                Anda
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </td>
                     <td className="py-3 px-4">

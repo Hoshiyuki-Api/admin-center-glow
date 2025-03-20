@@ -8,7 +8,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
-  updateProfile: (data: { username?: string; password?: string }) => Promise<boolean>;
+  updateProfile: (data: { username?: string; password?: string; imageUrl?: string }) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  const updateProfile = async (data: { username?: string; password?: string }): Promise<boolean> => {
+  const updateProfile = async (data: { username?: string; password?: string; imageUrl?: string }): Promise<boolean> => {
     if (!admin) return false;
     
     setIsLoading(true);
