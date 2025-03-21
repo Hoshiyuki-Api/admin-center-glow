@@ -19,6 +19,12 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -74,23 +80,28 @@ const Navbar = () => {
                 {navLinks.map((link, index) => 
                   link.dropdown ? (
                     <NavigationMenuItem key={index}>
-                      <NavigationMenuTrigger>{link.title}</NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[200px] gap-1 p-2">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className={`${navigationMenuTriggerStyle()} ${
+                            location.pathname === link.path ? 'bg-accent text-accent-foreground' : ''
+                          }`}>
+                            {link.title}
+                            <ChevronDown className="h-4 w-4 ml-1" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="bg-background border border-border shadow-md">
                           {link.dropdown.map((dropdownItem, idx) => (
-                            <li key={idx}>
-                              <NavigationMenuLink asChild>
-                                <Link
-                                  to={dropdownItem.path}
-                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                >
-                                  <div className="text-sm font-medium">{dropdownItem.title}</div>
-                                </Link>
-                              </NavigationMenuLink>
-                            </li>
+                            <DropdownMenuItem key={idx} asChild>
+                              <Link
+                                to={dropdownItem.path}
+                                className="block w-full px-4 py-2 cursor-pointer"
+                              >
+                                {dropdownItem.title}
+                              </Link>
+                            </DropdownMenuItem>
                           ))}
-                        </ul>
-                      </NavigationMenuContent>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </NavigationMenuItem>
                   ) : (
                     <NavigationMenuItem key={index}>

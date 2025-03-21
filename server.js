@@ -1,6 +1,7 @@
 
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -8,7 +9,6 @@ const PORT = process.env.PORT || 8080;
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // For persistent data storage
-const fs = require('fs');
 const dataFilePath = path.join(__dirname, 'server-data.json');
 
 // Initialize data storage
@@ -19,16 +19,40 @@ let serverData = {
   achievements: []
 };
 
-// Load data if exists
-if (fs.existsSync(dataFilePath)) {
+// Create data directory if it doesn't exist (for Heroku)
+const initializeDataStorage = () => {
   try {
-    const fileData = fs.readFileSync(dataFilePath, 'utf8');
-    serverData = JSON.parse(fileData);
-    console.log('Data loaded from file');
+    // Load data if exists
+    if (fs.existsSync(dataFilePath)) {
+      try {
+        const fileData = fs.readFileSync(dataFilePath, 'utf8');
+        serverData = JSON.parse(fileData);
+        console.log('Data loaded from file');
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    } else {
+      // Save initial empty data structure
+      saveData();
+      console.log('Created new data file');
+    }
   } catch (error) {
-    console.error('Error loading data:', error);
+    console.error('Error initializing data storage:', error);
+  }
+};
+
+// Function to save data to file
+function saveData() {
+  try {
+    fs.writeFileSync(dataFilePath, JSON.stringify(serverData, null, 2));
+    console.log('Data saved to file');
+  } catch (error) {
+    console.error('Error saving data:', error);
   }
 }
+
+// Initialize data storage
+initializeDataStorage();
 
 // API endpoints for data persistence
 app.use(express.json());
@@ -65,16 +89,6 @@ app.post('/api/achievements', (req, res) => {
   saveData();
   res.json({ success: true });
 });
-
-// Function to save data to file
-function saveData() {
-  try {
-    fs.writeFileSync(dataFilePath, JSON.stringify(serverData, null, 2));
-    console.log('Data saved to file');
-  } catch (error) {
-    console.error('Error saving data:', error);
-  }
-}
 
 // Handle all other requests by serving the index.html
 app.get('*', (req, res) => {
