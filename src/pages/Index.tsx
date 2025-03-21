@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import Hero from '@/components/home/Hero';
 import FeaturedNews from '@/components/home/FeaturedNews';
@@ -89,7 +88,7 @@ const Index = () => {
                     Hubungi Kami
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="text-white font-semibold border-white hover:bg-white/10 hover:text-white hover:border-white">
+                <Button asChild size="lg" variant="outline" className="text-white font-semibold bg-white/20 border-white hover:bg-white/40 hover:text-primary-foreground hover:border-transparent">
                   <Link to="/tentang-kami">
                     Pelajari Lebih Lanjut
                   </Link>
