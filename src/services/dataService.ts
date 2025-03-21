@@ -1,5 +1,19 @@
-
-import { news, admins, teachers, achievements, News, Admin, Teacher, Achievement } from '@/lib/data';
+import { 
+  news, 
+  admins, 
+  teachers, 
+  achievements, 
+  News, 
+  Admin, 
+  Teacher, 
+  Achievement, 
+  getNewsBySlug as dataGetNewsBySlug,
+  getLatestNews as dataGetLatestNews,
+  formatDate as dataFormatDate,
+  filterAchievements as dataFilterAchievements,
+  authenticateAdmin as dataAuthenticateAdmin,
+  generateSlug
+} from '@/lib/data';
 
 // Check if we're in production (Heroku)
 const isProduction = import.meta.env.MODE === 'production';
@@ -199,26 +213,21 @@ export const deleteAdmin = (id: string): boolean => {
   return true;
 };
 
-// Helper function from data.ts
-export const generateSlug = (title: string): string => {
-  return title
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-');
-};
+// Re-export functions from data.ts with proper handling
+export const getNewsBySlug = dataGetNewsBySlug;
+export const getLatestNews = dataGetLatestNews;
+export const formatDate = dataFormatDate;
+export const filterAchievements = dataFilterAchievements;
+export const authenticateAdmin = dataAuthenticateAdmin;
 
 // Initialize data on app startup
 loadInitialData();
 
-// Export other necessary functions from data.ts
+// Export other necessary items
 export {
   news,
   admins,
   teachers,
   achievements,
-  getNewsBySlug,
-  getLatestNews,
-  formatDate,
-  filterAchievements,
-  authenticateAdmin
+  generateSlug
 };
