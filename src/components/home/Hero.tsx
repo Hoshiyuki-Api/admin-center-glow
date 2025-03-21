@@ -53,13 +53,13 @@ const Hero = () => {
               berilmu, berkarakter, dan siap menghadapi tantangan global.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button asChild size="lg" className="text-base font-medium">
+              <Button asChild size="lg" className="text-base font-semibold bg-primary text-white hover:bg-primary/90">
                 <Link to="/tentang-kami">
                   Tentang Kami
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-base font-medium text-white border-white hover:bg-white/20 hover:text-white">
+              <Button asChild variant="outline" size="lg" className="text-base font-semibold border-white text-white hover:bg-white/10 hover:text-white hover:border-white">
                 <Link to="/hubungi-kami">
                   Hubungi Kami
                 </Link>
