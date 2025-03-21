@@ -213,7 +213,7 @@ export const deleteAdmin = (id: string): boolean => {
   return true;
 };
 
-// Re-export functions from data.ts with proper handling
+// Re-export functions from data.ts
 export const getNewsBySlug = dataGetNewsBySlug;
 export const getLatestNews = dataGetLatestNews;
 export const formatDate = dataFormatDate;
