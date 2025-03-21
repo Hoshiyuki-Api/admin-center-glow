@@ -38,7 +38,7 @@ const Hero = () => {
             }}
           />
         ))}
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
       {/* Content */}
@@ -59,7 +59,7 @@ const Hero = () => {
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-base font-semibold border-white text-white hover:bg-white/10 hover:text-white hover:border-white">
+              <Button asChild variant="outline" size="lg" className="text-base font-semibold bg-white/20 border-white text-white hover:bg-white/40 hover:text-primary-foreground hover:border-transparent">
                 <Link to="/hubungi-kami">
                   Hubungi Kami
                 </Link>
