@@ -5,8 +5,8 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// MongoDB Connection URI
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/yayasanApp";
+// MongoDB Connection URI - use provided connection string, falling back to localhost if not available
+const uri = process.env.MONGODB_URI || "mongodb+srv://Hoshiyuki:@mm4rGans@cluster0.crooj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {

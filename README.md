@@ -3,7 +3,7 @@
 
 ## MongoDB Integration
 
-This project now uses MongoDB for data persistence. This ensures that data is retained even when the Heroku dyno restarts or a new version is deployed.
+This project uses MongoDB for data persistence. The MongoDB connection string is already configured in the server.js file.
 
 ## Deployment to Heroku
 
@@ -23,19 +23,17 @@ This project now uses MongoDB for data persistence. This ensures that data is re
    heroku create your-app-name
    ```
 
-5. Set up MongoDB by following the instructions in `mongodb-setup.md`.
-
-6. Add the MongoDB URI to your Heroku config:
+5. The MongoDB connection string is already set in server.js, but you can override it with your own if needed:
    ```bash
    heroku config:set MONGODB_URI="your-mongodb-connection-string"
    ```
 
-7. Push your code to Heroku:
+6. Push your code to Heroku:
    ```bash
    git push heroku main
    ```
 
-8. Open your app:
+7. Open your app:
    ```bash
    heroku open
    ```
@@ -70,9 +68,9 @@ This will generate optimized static files in the `dist` directory which will be 
 
 ## MongoDB Connection
 
-The application connects to MongoDB using the connection string provided in the `MONGODB_URI` environment variable. If this variable is not set, it will default to `mongodb://localhost:27017/yayasanApp`.
+The application connects to MongoDB using the connection string provided in the `MONGODB_URI` environment variable or falls back to the connection string hardcoded in server.js.
 
-For local development with MongoDB:
-1. Install MongoDB Community Edition
-2. Start the MongoDB service
-3. The application will automatically connect to the local MongoDB instance
+For local development with a different MongoDB instance:
+1. Set the MONGODB_URI environment variable to your connection string
+2. Or modify the connection string directly in server.js
+

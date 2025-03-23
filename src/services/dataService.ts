@@ -1,4 +1,3 @@
-
 import { 
   news, 
   admins, 
@@ -220,6 +219,9 @@ export const getLatestNews = dataGetLatestNews;
 export const formatDate = dataFormatDate;
 export const filterAchievements = dataFilterAchievements;
 export const authenticateAdmin = dataAuthenticateAdmin;
+
+// Export types from data.ts
+export type { Admin, News, Teacher, Achievement };
 
 // Initialize data on app startup
 loadInitialData();
