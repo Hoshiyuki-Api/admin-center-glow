@@ -1,69 +1,78 @@
-# Welcome to your Lovable project
 
-## Project info
+# Yayasan Website
 
-**URL**: https://lovable.dev/projects/282a302c-3fc5-4603-b219-5ffdae2f2c90
+## MongoDB Integration
 
-## How can I edit this code?
+This project now uses MongoDB for data persistence. This ensures that data is retained even when the Heroku dyno restarts or a new version is deployed.
 
-There are several ways of editing your application.
+## Deployment to Heroku
 
-**Use Lovable**
+1. Create a Heroku account if you don't have one.
+2. Install the Heroku CLI:
+   ```bash
+   npm install -g heroku
+   ```
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/282a302c-3fc5-4603-b219-5ffdae2f2c90) and start prompting.
+3. Log in to Heroku:
+   ```bash
+   heroku login
+   ```
 
-Changes made via Lovable will be committed automatically to this repo.
+4. Create a new Heroku app:
+   ```bash
+   heroku create your-app-name
+   ```
 
-**Use your preferred IDE**
+5. Set up MongoDB by following the instructions in `mongodb-setup.md`.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+6. Add the MongoDB URI to your Heroku config:
+   ```bash
+   heroku config:set MONGODB_URI="your-mongodb-connection-string"
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+7. Push your code to Heroku:
+   ```bash
+   git push heroku main
+   ```
 
-Follow these steps:
+8. Open your app:
+   ```bash
+   heroku open
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Building the Project
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+To create the `dist` directory for production:
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+This will generate optimized static files in the `dist` directory which will be served by the Express server.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Local Development
 
-**Use GitHub Codespaces**
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-## What technologies are used for this project?
+3. For production mode locally:
+   ```bash
+   npm run build
+   node server.js
+   ```
 
-This project is built with .
+## MongoDB Connection
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The application connects to MongoDB using the connection string provided in the `MONGODB_URI` environment variable. If this variable is not set, it will default to `mongodb://localhost:27017/yayasanApp`.
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/282a302c-3fc5-4603-b219-5ffdae2f2c90) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+For local development with MongoDB:
+1. Install MongoDB Community Edition
+2. Start the MongoDB service
+3. The application will automatically connect to the local MongoDB instance

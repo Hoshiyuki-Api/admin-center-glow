@@ -1,3 +1,4 @@
+
 import { 
   news, 
   admins, 
@@ -75,9 +76,9 @@ async function saveNewsData() {
         },
         body: JSON.stringify(news),
       });
-      console.log('News data saved to server');
+      console.log('News data saved to MongoDB');
     } catch (error) {
-      console.error('Error saving news data to server:', error);
+      console.error('Error saving news data to MongoDB:', error);
     }
   }
 }
@@ -93,9 +94,9 @@ async function saveAdminsData() {
         },
         body: JSON.stringify(admins),
       });
-      console.log('Admins data saved to server');
+      console.log('Admins data saved to MongoDB');
     } catch (error) {
-      console.error('Error saving admins data to server:', error);
+      console.error('Error saving admins data to MongoDB:', error);
     }
   }
 }
@@ -111,9 +112,9 @@ async function saveTeachersData() {
         },
         body: JSON.stringify(teachers),
       });
-      console.log('Teachers data saved to server');
+      console.log('Teachers data saved to MongoDB');
     } catch (error) {
-      console.error('Error saving teachers data to server:', error);
+      console.error('Error saving teachers data to MongoDB:', error);
     }
   }
 }
@@ -129,9 +130,9 @@ async function saveAchievementsData() {
         },
         body: JSON.stringify(achievements),
       });
-      console.log('Achievements data saved to server');
+      console.log('Achievements data saved to MongoDB');
     } catch (error) {
-      console.error('Error saving achievements data to server:', error);
+      console.error('Error saving achievements data to MongoDB:', error);
     }
   }
 }
