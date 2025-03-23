@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Gunakan connection string yang benar
-const uri = process.env.MONGODB_URI || "mongodb+srv://Hoshiyuki:@mm4rGans@cluster0.crooj.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.MONGODB_URI || "mongodb+srv://Hoshiyuki:%40mm4rGans@cluster0.crooj.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, {
   serverApi: {
