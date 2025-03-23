@@ -1,5 +1,5 @@
 
-# MongoDB Setup Guide for Heroku Deployment
+# MongoDB Atlas Setup Guide for Heroku Deployment
 
 ## 1. Create a MongoDB Atlas Account
 
@@ -7,27 +7,43 @@
 2. Create a new project.
 3. Build a new cluster (the free tier is sufficient for getting started).
 
-## 2. Configure Database Access
+## 2. Connect to Your Cluster
 
-1. In the MongoDB Atlas dashboard, go to "Database Access" under Security.
-2. Click "Add New Database User".
-3. Create a username and password. Make sure to remember these credentials.
-4. Set appropriate privileges (at minimum "Read and Write to Any Database").
-5. Click "Add User".
+After your cluster is created, you'll need to configure security and create database access credentials:
 
-## 3. Configure Network Access
+### Step 1: Set up connection security
 
-1. Go to "Network Access" under Security.
-2. Click "Add IP Address".
-3. For development, you can click "Allow Access from Anywhere" (or add specific IP addresses for better security).
-4. Click "Confirm".
+You have three options to secure your MongoDB Atlas cluster:
+- **Add Your Current IP Address**: Allows connections only from your current location
+- **Add a Different IP Address**: Allows connections from a specific IP address
+- **Allow Access from Anywhere**: Allows connections from any IP address (less secure, but useful for Heroku which has dynamic IPs)
 
-## 4. Get Your Connection String
+For Heroku deployment, select **Allow Access from Anywhere**, as Heroku uses dynamic IP addresses.
 
-1. Go to "Clusters" and click "Connect" on your cluster.
-2. Choose "Connect your application".
-3. Copy the connection string.
-4. Replace `<password>` in the connection string with your database user password.
+### Step 2: Create a database user
+
+1. Create a database username and password. This is what your application will use to connect.
+2. This first user will have `atlasAdmin` permissions for your project.
+3. **IMPORTANT**: Make sure to save these credentials somewhere secure - you'll need them for your connection string.
+
+## 3. Choose a Connection Method
+
+1. After setting up security, click "Choose a connection method"
+2. Select "Connect your application"
+3. Choose your driver and version (Node.js and the latest version)
+4. Copy the connection string provided
+
+## 4. Format Your Connection String
+
+The connection string will look something like this:
+```
+mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+```
+
+Make sure to:
+1. Replace `<username>` with your database username
+2. Replace `<password>` with your database password
+3. Add your database name after the hostname (e.g., `mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/yayasanApp?retryWrites=true&w=majority`)
 
 ## 5. Add MongoDB to Heroku
 

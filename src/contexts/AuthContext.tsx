@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { Admin, authenticateAdmin, updateAdmin } from '@/lib/data';
+import { Admin, authenticateAdmin, updateAdmin } from '@/services/dataService';
 
 interface AuthContextType {
   admin: Admin | null;
