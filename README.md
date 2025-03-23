@@ -74,3 +74,6 @@ For local development with a different MongoDB instance:
 1. Set the MONGODB_URI environment variable to your connection string
 2. Or modify the connection string directly in server.js
 
+## ES Modules
+
+This project uses ES Modules. The server.js file is written using ES Module syntax, and package.json includes `"type": "module"`.

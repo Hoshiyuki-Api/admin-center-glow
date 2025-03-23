@@ -1,7 +1,13 @@
 
-const express = require('express');
-const path = require('path');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+import express from 'express';
+import path from 'path';
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -64,9 +70,11 @@ async function initializeDataIfEmpty() {
     // Check if news collection is empty
     const newsCount = await collections.news.countDocuments();
     if (newsCount === 0) {
-      // Import initial data from data.ts (this will be transformed to match MongoDB format)
+      // Import initial data dynamically using ES modules
       try {
-        const { news, admins, teachers, achievements } = require('./src/lib/data');
+        // Using dynamic import for ES modules
+        const dataModule = await import('./src/lib/data.js');
+        const { news, admins, teachers, achievements } = dataModule;
         
         // Convert Date objects to ISOString for MongoDB compatibility
         const processedNews = news.map(item => ({
