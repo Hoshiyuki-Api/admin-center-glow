@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import NewsDetailComponent from '@/components/news/NewsDetail';
-import { getNewsBySlug, getLatestNews, News } from '@/lib/data';
+import { getNewsBySlug, getLatestNews, News } from '@/services/dataService';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Clock, ChevronRight } from 'lucide-react';
 
