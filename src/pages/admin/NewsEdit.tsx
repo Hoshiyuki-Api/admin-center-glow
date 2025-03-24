@@ -4,7 +4,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from './AdminLayout';
 import NewsForm from '@/components/admin/NewsForm';
-import { news, News } from '@/lib/data';
+import { news, News } from '@/services/dataService';
 
 const NewsEdit = () => {
   const { admin, isLoading } = useAuth();

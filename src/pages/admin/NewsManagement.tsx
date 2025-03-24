@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from './AdminLayout';
-import { news, deleteNews, News as NewsType } from '@/lib/data';
+import { news, deleteNews, News as NewsType } from '@/services/dataService';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import {
@@ -31,9 +31,13 @@ const NewsManagement = () => {
   const { admin, isLoading } = useAuth();
   const [newsList, setNewsList] = useState<NewsType[]>([]);
   
+  const loadNews = () => {
+    setNewsList([...news].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()));
+  };
+  
   useEffect(() => {
     window.scrollTo(0, 0);
-    setNewsList([...news].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()));
+    loadNews();
   }, []);
   
   if (isLoading) {
@@ -49,7 +53,7 @@ const NewsManagement = () => {
     const success = deleteNews(id);
     
     if (success) {
-      setNewsList(newsList.filter(item => item.id !== id));
+      loadNews();
       toast({
         title: 'Berita dihapus',
         description: 'Berita telah berhasil dihapus',

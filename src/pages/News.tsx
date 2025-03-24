@@ -1,8 +1,7 @@
-
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { news } from '@/lib/data';
+import { news } from '@/services/dataService';
 import NewsCard from '@/components/news/NewsCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -24,9 +23,9 @@ const News = () => {
       );
       setFilteredNews(results);
     } else {
-      setFilteredNews(news);
+      setFilteredNews([...news]);
     }
-  }, [searchTerm]);
+  }, [searchTerm, news]);
 
   return (
     <div className="min-h-screen flex flex-col">
