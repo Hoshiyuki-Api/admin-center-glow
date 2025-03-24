@@ -1,5 +1,5 @@
 
-import { News, formatDate } from '@/lib/data';
+import { News, formatDate } from '@/services/dataService';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 

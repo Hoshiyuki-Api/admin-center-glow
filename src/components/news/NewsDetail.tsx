@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { News, formatDate } from '@/services/dataTypes';
+import { News, formatDate } from '@/services/dataService';
 import { Calendar, User } from 'lucide-react';
 
 interface NewsDetailProps {

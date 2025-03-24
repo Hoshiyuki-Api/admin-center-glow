@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { News, getLatestNews, formatDate } from '@/lib/data';
+import { News, getLatestNews, formatDate } from '@/services/dataService';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
